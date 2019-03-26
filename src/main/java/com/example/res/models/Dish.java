@@ -16,10 +16,13 @@ public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    String title, about, image;
+    @Column(unique = true, length = 30)
+    String title;
+    String about, image;
     boolean isActive;
     double coast;
     @JsonIgnore
+    @NonNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     Category category;
 

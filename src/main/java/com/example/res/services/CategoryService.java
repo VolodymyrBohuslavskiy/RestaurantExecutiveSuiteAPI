@@ -19,4 +19,8 @@ public class CategoryService {
     public Category getOneByName(String categoryName) {
         return categoryDAO.getByCategoryName(categoryName);
     }
+
+    public void save(Category newCategory) {
+        categoryDAO.save(newCategory);
+    }
 }

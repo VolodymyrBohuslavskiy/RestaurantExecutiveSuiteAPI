@@ -17,8 +17,11 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    @Column(unique = true)
+    @Column(unique = true, length = 30)
     String categoryName;
+    @Column(unique = true, length = 100)
+    String filesFolder = "D:\\Q2\\" + categoryName;
+    String categoryImage;
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
     List<Dish> dishes;

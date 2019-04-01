@@ -15,8 +15,9 @@ import java.io.File;
 import java.io.IOException;
 
 @RestController
+@CrossOrigin
 public class MainController {
-private String workDirectory="D:\\Q2\\";
+    private String workDirectory = "D:\\Q2\\";
     @Autowired
     DishService dishService;
     @Autowired
@@ -29,8 +30,7 @@ private String workDirectory="D:\\Q2\\";
         Category newCategory = new ObjectMapper().readValue(category, Category.class);
         File categoryDir = new File(workDirectory + newCategory.getCategoryName());
         if (!categoryDir.exists()) categoryDir.mkdir();
-        newCategory.setFilesFolder(categoryDir.getAbsolutePath());
-        categoryImage.transferTo(new File(workDirectory + categoryImage.getOriginalFilename()));
+        categoryImage.transferTo(new File(workDirectory + newCategory.getCategoryName() + "\\" + categoryImage.getOriginalFilename()));
         newCategory.setCategoryImage(categoryImage.getOriginalFilename());
         categoryService.save(newCategory);
     }
@@ -43,7 +43,7 @@ private String workDirectory="D:\\Q2\\";
         Category thisCategory = categoryService.getOneByName(categoryName);
         dishNew.setCategory(thisCategory);
         dishNew.setImage(image.getOriginalFilename());
-        image.transferTo(new File(thisCategory.getFilesFolder()+"\\"+ image.getOriginalFilename()));
+        image.transferTo(new File(thisCategory.getCategoryName() + "\\" + image.getOriginalFilename()));
         try {
             dishService.save(dishNew);
             return new ObjectMapper().writeValueAsString(dishNew);

@@ -19,7 +19,6 @@ public class Category {
     int id;
     @Column(unique = true, length = 30)
     String categoryName, categoryImage;
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
     List<Dish> dishes;
     @JsonIgnore

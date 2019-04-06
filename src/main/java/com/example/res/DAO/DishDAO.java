@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface DishDAO extends JpaRepository<Dish, Integer > {
-    List<Dish> findAllByTitleStartsWith(String word);
+    List<Dish> findAllByTitleContainsAndEntreeTrue(String word);
+
 }

@@ -35,15 +35,19 @@ public class MainController {
         categoryService.save(newCategory);
     }
 
+
     @PostMapping("/add_dish")
     public String addDish(@RequestParam String dish,
                           @RequestParam String categoryName,
                           @RequestParam MultipartFile image) throws IOException {
         Dish dishNew = new ObjectMapper().readValue(dish, Dish.class);
         Category thisCategory = categoryService.getOneByName(categoryName);
+
         dishNew.setCategory(thisCategory);
         dishNew.setImage(image.getOriginalFilename());
-        image.transferTo(new File(thisCategory.getCategoryName() + "\\" + image.getOriginalFilename()));
+
+        image.transferTo(new File(workDirectory + "\\" + thisCategory.getCategoryName() + "\\" + image.getOriginalFilename()));
+
         try {
             dishService.save(dishNew);
             return new ObjectMapper().writeValueAsString(dishNew);
@@ -51,6 +55,7 @@ public class MainController {
             return "Dish with title " + dishNew.getTitle() + " contains in base";
         }
     }
+
 
     @GetMapping("/get_categoryes")
     public String getMenu() throws JsonProcessingException {
@@ -64,8 +69,8 @@ public class MainController {
     }
 
     @GetMapping("/find_dish")
-    public String findDish(@RequestParam String sartingWith) throws JsonProcessingException {
-        return new ObjectMapper().writeValueAsString(dishService.findStartWith(sartingWith));
+    public String findDish(@RequestParam String word) throws JsonProcessingException {
+        return new ObjectMapper().writeValueAsString(dishService.findStartWith(word));
     }
 
 

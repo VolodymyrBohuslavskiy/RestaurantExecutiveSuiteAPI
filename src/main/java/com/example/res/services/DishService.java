@@ -17,6 +17,6 @@ public class DishService {
     }
 
     public List<Dish> findStartWith(String sartwith) {
-   return dishDAO.findAllByTitleStartsWith(sartwith);
+   return dishDAO.findAllByTitleContainsAndEntreeTrue(sartwith);
     }
 }

@@ -19,7 +19,7 @@ public class Dish {
     @Column(unique = true, length = 30)
     String title;
     String about, image;
-    boolean isActive;
+    boolean entree;
     double coast;
     @JsonIgnore
     @NonNull

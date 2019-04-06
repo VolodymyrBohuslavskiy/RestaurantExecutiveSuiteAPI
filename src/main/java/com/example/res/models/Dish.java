@@ -5,10 +5,12 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import java.util.List;
+
 
 @Entity
 @Data
-@ToString(exclude = "category")
+@ToString(exclude = {"category", "accountList"})
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -25,5 +27,7 @@ public class Dish {
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     Category category;
-
+    @ManyToMany
+    @JsonIgnore
+    List<Account> accountList;
 }

@@ -1,7 +1,9 @@
 package com.example.res.controller;
 
+import com.example.res.models.Account;
 import com.example.res.models.Category;
 import com.example.res.models.Dish;
+import com.example.res.services.AccountService;
 import com.example.res.services.CategoryService;
 import com.example.res.services.DishService;
 import com.example.res.services.MenuService;
@@ -13,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+
 
 @RestController
 @CrossOrigin
@@ -24,6 +28,8 @@ public class MainController {
     CategoryService categoryService;
     @Autowired
     MenuService menuService;
+    @Autowired
+    AccountService accountService;
 
     @PostMapping("/create_category")
     public void createCategory(@RequestParam String category, @RequestParam MultipartFile categoryImage) throws IOException {
@@ -54,6 +60,19 @@ public class MainController {
         } catch (Exception e) {
             return "Dish with title " + dishNew.getTitle() + " contains in base";
         }
+    }
+
+    @PostMapping("/add_account")
+    public void addAccount(@RequestBody String account) throws IOException {
+        Account newAccount = new Account();
+        newAccount.setDishList(Arrays.asList(new ObjectMapper().readValue(account, Dish[].class)));
+        accountService.save(newAccount);
+    }
+
+
+    @GetMapping("/get_all_accounts")
+    public String getAllAccounts() throws JsonProcessingException {
+        return new ObjectMapper().writeValueAsString(accountService.findAll());
     }
 
 

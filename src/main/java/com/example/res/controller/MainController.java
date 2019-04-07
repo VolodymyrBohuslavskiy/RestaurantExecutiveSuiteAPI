@@ -1,6 +1,7 @@
 package com.example.res.controller;
 
 import com.example.res.models.Account;
+import com.example.res.models.AccountStatuse;
 import com.example.res.models.Category;
 import com.example.res.models.Dish;
 import com.example.res.services.AccountService;
@@ -19,7 +20,7 @@ import java.util.Arrays;
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin("*")
 public class MainController {
     private String workDirectory = "D:\\Q2\\";
     @Autowired
@@ -40,7 +41,6 @@ public class MainController {
         newCategory.setCategoryImage(categoryImage.getOriginalFilename());
         categoryService.save(newCategory);
     }
-
 
     @PostMapping("/add_dish")
     public String addDish(@RequestParam String dish,
@@ -69,22 +69,14 @@ public class MainController {
         accountService.save(newAccount);
     }
 
-
     @GetMapping("/get_all_accounts")
     public String getAllAccounts() throws JsonProcessingException {
-        return new ObjectMapper().writeValueAsString(accountService.findAll());
+        return new ObjectMapper().writeValueAsString(accountService.findWitoutPaid());
     }
-
 
     @GetMapping("/get_categoryes")
     public String getMenu() throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(categoryService.getCategories());
-    }
-
-
-    @GetMapping("/get_dish_from")
-    public String detdishFromCategory(@RequestParam String categoryName) throws JsonProcessingException {
-        return new ObjectMapper().writeValueAsString(categoryService.getOneByName(categoryName).getDishes());
     }
 
     @GetMapping("/find_dish")
@@ -92,5 +84,16 @@ public class MainController {
         return new ObjectMapper().writeValueAsString(dishService.findStartWith(word));
     }
 
-
+    @PatchMapping("/pay")
+    public void pay(@RequestBody String id) {
+        Account one = accountService.getOne(Integer.parseInt(id));
+        one.setAccountStatuse(AccountStatuse.PAID);
+        accountService.save(one);
+    }
+    @PatchMapping("/submit")
+    public void submit(@RequestBody String id) {
+        Account one = accountService.getOne(Integer.parseInt(id));
+        one.setAccountStatuse(AccountStatuse.SUBMITTED);
+        accountService.save(one);
+    }
 }

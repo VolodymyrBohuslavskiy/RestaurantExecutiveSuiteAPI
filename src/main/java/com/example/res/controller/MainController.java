@@ -84,16 +84,13 @@ public class MainController {
         return new ObjectMapper().writeValueAsString(dishService.findStartWith(word));
     }
 
-    @PatchMapping("/pay")
-    public void pay(@RequestBody String id) {
+
+    @PatchMapping("/set_account_statuse")
+    public void submit(@RequestBody String id, @RequestHeader String newStatuse) {
         Account one = accountService.getOne(Integer.parseInt(id));
-        one.setAccountStatuse(AccountStatuse.PAID);
+        one.setAccountStatuse(AccountStatuse.valueOf(newStatuse));
         accountService.save(one);
     }
-    @PatchMapping("/submit")
-    public void submit(@RequestBody String id) {
-        Account one = accountService.getOne(Integer.parseInt(id));
-        one.setAccountStatuse(AccountStatuse.SUBMITTED);
-        accountService.save(one);
-    }
+
+
 }

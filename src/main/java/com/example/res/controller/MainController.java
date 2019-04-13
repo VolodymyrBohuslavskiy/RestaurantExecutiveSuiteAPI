@@ -22,7 +22,7 @@ import java.util.Arrays;
 @RestController
 @CrossOrigin("*")
 public class MainController {
-    private String workDirectory = "D:\\Q2\\";
+    private String workDirectoryPath = "D:\\Q2\\";
     @Autowired
     DishService dishService;
     @Autowired
@@ -32,12 +32,18 @@ public class MainController {
     @Autowired
     AccountService accountService;
 
+    private void createWorkDirectory() {
+        File workDirectory = new File(workDirectoryPath);
+        if (!workDirectory.exists()) workDirectory.mkdir();
+    }
+
     @PostMapping("/create_category")
     public void createCategory(@RequestParam String category, @RequestParam MultipartFile categoryImage) throws IOException {
+        createWorkDirectory();
         Category newCategory = new ObjectMapper().readValue(category, Category.class);
-        File categoryDir = new File(workDirectory + newCategory.getCategoryName());
+        File categoryDir = new File(workDirectoryPath + newCategory.getCategoryName());
         if (!categoryDir.exists()) categoryDir.mkdir();
-        categoryImage.transferTo(new File(workDirectory + newCategory.getCategoryName() + "\\" + categoryImage.getOriginalFilename()));
+        categoryImage.transferTo(new File(workDirectoryPath + newCategory.getCategoryName() + "\\" + categoryImage.getOriginalFilename()));
         newCategory.setCategoryImage(categoryImage.getOriginalFilename());
         categoryService.save(newCategory);
     }
@@ -52,7 +58,7 @@ public class MainController {
         dishNew.setCategory(thisCategory);
         dishNew.setImage(image.getOriginalFilename());
 
-        image.transferTo(new File(workDirectory + "\\" + thisCategory.getCategoryName() + "\\" + image.getOriginalFilename()));
+        image.transferTo(new File(workDirectoryPath + "\\" + thisCategory.getCategoryName() + "\\" + image.getOriginalFilename()));
 
         try {
             dishService.save(dishNew);

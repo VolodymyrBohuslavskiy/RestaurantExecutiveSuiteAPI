@@ -17,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
 @RestController
@@ -48,6 +50,8 @@ public class MainController {
         categoryService.save(newCategory);
     }
 
+
+
     @PostMapping("/add_dish")
     public String addDish(@RequestParam String dish,
                           @RequestParam String categoryName,
@@ -77,6 +81,13 @@ public class MainController {
 
     @GetMapping("/get_all_accounts")
     public String getAllAccounts() throws JsonProcessingException {
+        List<Account> all = accountService.findAll();
+        Collections.reverse(all);
+        return new ObjectMapper().writeValueAsString(all);
+    }
+
+    @GetMapping("/get_active_accounts")
+    public String getAllActiveAccounts() throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(accountService.findWitoutPaid());
     }
 

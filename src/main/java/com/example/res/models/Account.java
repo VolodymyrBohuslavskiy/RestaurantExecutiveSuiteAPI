@@ -1,6 +1,7 @@
 package com.example.res.models;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.ToString;
@@ -19,6 +20,7 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     Date date = new Date();
     AccountStatuse accountStatuse = AccountStatuse.ORDERED;
     @ManyToMany

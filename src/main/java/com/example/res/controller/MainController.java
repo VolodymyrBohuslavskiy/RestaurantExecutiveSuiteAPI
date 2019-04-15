@@ -42,7 +42,8 @@ public class MainController {
     @PostMapping("/create_category")
     public void createCategory(@RequestParam String category, @RequestParam MultipartFile categoryImage) throws IOException {
         createWorkDirectory();
-        Category newCategory = new ObjectMapper().readValue(category, Category.class);
+        Category newCategory = new Category();
+        newCategory.setCategoryName(category);
         File categoryDir = new File(workDirectoryPath + newCategory.getCategoryName());
         if (!categoryDir.exists()) categoryDir.mkdir();
         categoryImage.transferTo(new File(workDirectoryPath + newCategory.getCategoryName() + "\\" + categoryImage.getOriginalFilename()));

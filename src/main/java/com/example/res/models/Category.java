@@ -24,5 +24,4 @@ public class Category {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     Menu menu;
-
 }

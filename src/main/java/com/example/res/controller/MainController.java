@@ -42,6 +42,7 @@ public class MainController {
     @PostMapping("/create_category")
     public void createCategory(@RequestParam String category, @RequestParam MultipartFile categoryImage) throws IOException {
         createWorkDirectory();
+
         Category newCategory = new Category();
         newCategory.setCategoryName(category);
         File categoryDir = new File(workDirectoryPath + newCategory.getCategoryName());
@@ -50,7 +51,6 @@ public class MainController {
         newCategory.setCategoryImage(categoryImage.getOriginalFilename());
         categoryService.save(newCategory);
     }
-
 
 
     @PostMapping("/add_dish")
@@ -72,6 +72,7 @@ public class MainController {
             return "Dish with title " + dishNew.getTitle() + " contains in base";
         }
     }
+
 
     @PostMapping("/add_account")
     public void addAccount(@RequestBody String account) throws IOException {

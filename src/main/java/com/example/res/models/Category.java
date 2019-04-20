@@ -19,7 +19,7 @@ public class Category {
     int id;
     @Column(unique = true, length = 30)
     String categoryName, categoryImage;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
+    @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY, mappedBy = "category")
     List<Dish> dishes;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -25,7 +25,7 @@ public class Dish {
     double coast;
     @JsonIgnore
     @NonNull
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     Category category;
     @ManyToMany
     @JsonIgnore

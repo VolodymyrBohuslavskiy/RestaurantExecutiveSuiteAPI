@@ -59,12 +59,9 @@ public class MainController {
                           @RequestParam MultipartFile image) throws IOException {
         Dish dishNew = new ObjectMapper().readValue(dish, Dish.class);
         Category thisCategory = categoryService.getOneByName(categoryName);
-
         dishNew.setCategory(thisCategory);
         dishNew.setImage(image.getOriginalFilename());
-
         image.transferTo(new File(workDirectoryPath + "\\" + thisCategory.getCategoryName() + "\\" + image.getOriginalFilename()));
-
         try {
             dishService.save(dishNew);
             return new ObjectMapper().writeValueAsString(dishNew);
@@ -111,5 +108,36 @@ public class MainController {
         accountService.save(one);
     }
 
+    @PatchMapping("/update/dish/status")
+    public void entree(@RequestBody int id) {
+        Dish dish = dishService.getOne(id);
+        dish.setEntree(!dish.isEntree());
+        dishService.save(dish);
+    }
 
+    @PatchMapping("/update/dish")
+    public void updateDish(@RequestParam String dish, @RequestParam String categoryName) throws IOException {
+        Dish dishThis = new ObjectMapper().readValue(dish, Dish.class);
+        Dish old = dishService.getOne(dishThis.getId());
+        System.out.println(dishThis);
+        System.out.println(old);
+        dishThis.setImage(old.getImage());
+        dishThis.setEntree(old.isEntree());
+        Category newCategory = categoryService.getOneByName(categoryName);
+        dishThis.setCategory(newCategory);
+        File imageThis = new File(workDirectoryPath + "\\" + old.getCategory().getCategoryName() + "\\" + old.getImage());
+        imageThis.renameTo(new File(workDirectoryPath + "\\" + newCategory.getCategoryName() + "\\" + old.getImage()));
+        dishService.save(dishThis);
+    }
+
+    @DeleteMapping("/delete/dish")
+    public void deleteDish(@RequestParam String deleteId) {
+        Dish dish = dishService.getOne(Integer.parseInt(deleteId));
+        File file = new File(workDirectoryPath + "\\" + dish.getCategory().getCategoryName() + "\\" + dish.getImage());
+        file.delete();
+        dishService.deleteById(dish);
+    }
 }
+
+
+

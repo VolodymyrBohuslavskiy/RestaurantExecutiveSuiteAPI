@@ -20,6 +20,6 @@ public class Menu {
     int id;
     Date date = new Date();
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "menu")
+    @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY, mappedBy = "menu")
     List<Category> categories;
 }

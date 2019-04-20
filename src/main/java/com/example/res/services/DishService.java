@@ -19,4 +19,12 @@ public class DishService {
     public List<Dish> findStartWith(String sartwith) {
    return dishDAO.findAllByTitleContainsAndEntreeTrue(sartwith);
     }
+
+    public Dish getOne(int id) {
+        return dishDAO.getOne(id);
+    }
+
+    public void deleteById(Dish dish) {
+        dishDAO.delete(dish);
+    }
 }

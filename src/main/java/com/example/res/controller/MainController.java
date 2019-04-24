@@ -119,8 +119,6 @@ public class MainController {
     public void updateDish(@RequestParam String dish, @RequestParam String categoryName) throws IOException {
         Dish dishThis = new ObjectMapper().readValue(dish, Dish.class);
         Dish old = dishService.getOne(dishThis.getId());
-        System.out.println(dishThis);
-        System.out.println(old);
         dishThis.setImage(old.getImage());
         dishThis.setEntree(old.isEntree());
         Category newCategory = categoryService.getOneByName(categoryName);

@@ -39,7 +39,7 @@ public class MainController {
         if (!workDirectory.exists()) workDirectory.mkdir();
     }
 
-    @PostMapping("/create_category")
+    @PostMapping("/create/category")
     public void createCategory(@RequestParam String category, @RequestParam MultipartFile categoryImage) throws IOException {
         createWorkDirectory();
 
@@ -49,11 +49,10 @@ public class MainController {
         if (!categoryDir.exists()) categoryDir.mkdir();
         categoryImage.transferTo(new File(workDirectoryPath + newCategory.getCategoryName() + "\\" + categoryImage.getOriginalFilename()));
         newCategory.setCategoryImage(categoryImage.getOriginalFilename());
-        categoryService.save(newCategory);
     }
 
 
-    @PostMapping("/add_dish")
+    @PostMapping("/add/dish")
     public String addDish(@RequestParam String dish,
                           @RequestParam String categoryName,
                           @RequestParam MultipartFile image) throws IOException {
@@ -71,37 +70,37 @@ public class MainController {
     }
 
 
-    @PostMapping("/add_account")
+    @PostMapping("/add/account")
     public void addAccount(@RequestBody String account) throws IOException {
         Account newAccount = new Account();
         newAccount.setDishList(Arrays.asList(new ObjectMapper().readValue(account, Dish[].class)));
         accountService.save(newAccount);
     }
 
-    @GetMapping("/get_all_accounts")
+    @GetMapping("/get/all/accounts")
     public String getAllAccounts() throws JsonProcessingException {
         List<Account> all = accountService.findAll();
         Collections.reverse(all);
         return new ObjectMapper().writeValueAsString(all);
     }
 
-    @GetMapping("/get_active_accounts")
+    @GetMapping("/get/active/accounts")
     public String getAllActiveAccounts() throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(accountService.findWitoutPaid());
     }
 
-    @GetMapping("/get_categoryes")
+    @GetMapping("/get/categoryes")
     public String getMenu() throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(categoryService.getCategories());
     }
 
-    @GetMapping("/find_dish")
+    @GetMapping("/find/dish")
     public String findDish(@RequestParam String word) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(dishService.findStartWith(word));
     }
 
 
-    @PatchMapping("/set_account_statuse")
+    @PatchMapping("/set/account/statuse")
     public void submit(@RequestBody String id, @RequestHeader String newStatuse) {
         Account one = accountService.getOne(Integer.parseInt(id));
         one.setAccountStatuse(AccountStatuse.valueOf(newStatuse));
